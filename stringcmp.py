@@ -514,7 +514,7 @@ def winklermod(str1, str2, in_weight):
   assert (winkler_weight >= in_weight), 'Winkler modification is negative'
 
   assert (winkler_weight >= 0.0) and (winkler_weight <= 1.0), \
-         'Similarity weight outside 0-1: %f' % (w)
+         'Similarity weight outside 0-1: %f' % winkler_weight
 
   # A log message - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #
@@ -1719,7 +1719,7 @@ def compression(str1, str2, compressor='zlib', min_threshold = None):
     #print
 
     if (c21 != c12):
-      print str1, str2, c12, c21
+      print(str1, str2, c12, c21)
 
   if (c12 == 0.0):
     return 0.0  # Maximal distance
@@ -1727,8 +1727,7 @@ def compression(str1, str2, compressor='zlib', min_threshold = None):
   w = 1.0 - (c12 - min(c1,c2)) / max(c1,c2)
 
   if (w < 0.0):
-    print 'warning:Compression based comparison smaller than 0.0 with ' + \
-          'strings "%s" and "%s": %.3f (cap to 1.0)' % (str1, str2, w)
+    print('warning:Compression based comparison smaller than 0.0 with strings "%s" and "%s": %.3f (cap to 1.0)'.format(str1, str2, w))
     w = 0.0
 
   assert (w >= 0.0) and (w <= 1.0), 'Similarity weight outside 0-1: %f' % (w)
@@ -2594,7 +2593,7 @@ def charhistogram(str1, str2, min_threshold = None):
     #
     cos_sim = min(cos_sim, 1.0)
 
-  assert (cos_sim >= 0.0) and (cos_sim <= 1.0), (cos_sim, vec1, vec2)
+  assert (cos_sim >= 0.0) and (cos_sim <= 1.0), (cos_sim, vec1sum, vec2sum)
 
   return cos_sim
 
@@ -2678,22 +2677,22 @@ if (__name__ == '__main__'):
     s += ' %.3f' % (twoleveljaro(str1,str2, qgram, 0.8))
     msg.append(s)
 
-    if (qgram(str1, str2, 2) != sgram(str1,str2,gc=[[0]])):
+    if qgram(str1, str2, 2) != sgram(str1, str2, gc=[[0]]):
       msg.append('  Error: 2-gram != s-gram (with gc=[[0]])')
 
-    if (editdist(str1, str2) > bagdist(str1,str2)):
+    if editdist(str1, str2) > bagdist(str1, str2):
       msg.append('  Error: BadD > EditD')
 
-    if (lcs(str1,str2,1) < lcs(str1,str2,2)):
+    if lcs(str1, str2, 1) < lcs(str1, str2, 2):
       msg.append('  Error: LCS1 < LCS2')
 
-    if (lcs(str1,str2,2) < lcs(str1,str2,3)):
+    if lcs(str1, str2, 2) < lcs(str1, str2, 3):
       msg.append('  Error: LCS2 < LCS3')
 
-    if (editdist(str1, str2) > mod_editdist(str1,str2)):
+    if editdist(str1, str2) > mod_editdist(str1, str2):
       msg.append('  Error: EditD > Modified EditD')
 
   for m in msg:
-    print m
+    print(m)
 
 # =============================================================================
